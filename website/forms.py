@@ -3,8 +3,8 @@ from flask_wtf import Form, RecaptchaField
 
 
 class Login(Form):
-    login_user = TextField('Username', [validators.Required()])
-    login_pass = PasswordField('Password', [validators.Required()])
+    username = TextField('Username', [validators.Required()])
+    password = PasswordField('Password', [validators.Required()])
 
 class Register(Form):
     username = TextField('Username', [validators.Length(min=1, max = 12)])

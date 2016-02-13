@@ -21,7 +21,7 @@ def after_request(response):
 @app.route("/")
 @app.route("/index")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", login=Login(), sign_up=Register())
 
 
 @app.route('/login', methods=['POST'])
@@ -34,7 +34,7 @@ def login():
 		except:
 			check_login = False
 		if check_login == True:
-		    session['username'] = user.username
+		    login_user()
 		    return redirect(url_for('index'))
 	return render_template('index.html', login=l_form, sign_up=Register())
 
