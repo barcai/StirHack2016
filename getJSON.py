@@ -1,7 +1,7 @@
 import requests, json, sys
 
 def checkAPIList():
-    url = "http://dogfish.tech/api/apis?broken=1"
+    url = "http://dogfish.tech/api/apis"
     r = requests.get(url)
 
     if r.status_code == requests.codes.ok:
@@ -35,13 +35,13 @@ def check_api(api_data, auth_key, user_name, user_password):
 
 	elif(access == "auth"):
 		auth = "&auth=" + auth_key
-		response = requests.get(url_to_check + auth + "&broken=1")
+		response = requests.get(url_to_check + auth)
 
 	elif(access == "token"):
 		#token = "login?user=" + user_name + "&password=" + user_password
 		token = getToken(user_name, user_password)
 		if(token[1] != None):
-			response = requests.get(url_to_check + "&token=" + token[1] + "&broken=1")
+			response = requests.get(url_to_check + "&token=" + token[1])
 
 	returned_json = None
 	try:
