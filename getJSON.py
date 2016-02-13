@@ -31,7 +31,7 @@ def check_api(api_data, auth_key, user_name, user_password):
 	# Make a test call to the given API
 	response = None
 	if(access == "always"):
-		response = requests.get(url_to_check + "?broken=1")
+		response = requests.get(url_to_check)
 
 	elif(access == "auth"):
 		auth = "&auth=" + auth_key
