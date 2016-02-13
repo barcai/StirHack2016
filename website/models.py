@@ -4,7 +4,7 @@ import json
 from flask.ext.login import UserMixin
 from peewee import *
 
-from app import *
+import website
 
 db = SqliteDatabase("iamverycreativeinnamingdatabases.db")
 

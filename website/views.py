@@ -1,14 +1,14 @@
 from flask import render_template, url_for, session, request, g, flash
-from flask.ext.login import login_required
+from flask.ext.login import login_required, login_user, logout_user, current_user
 
-from app import *
-import models
-from forms import *
+from website.models import db, User, check_pass
+from website.forms import Login, Register
+from website import app
 
 
 @app.before_request
 def before_request():
-    g.db = models.db
+    g.db = db
     g.db.connect()
 
 
@@ -30,7 +30,7 @@ def login():
 	if l_form.validate_on_submit():
 		try:
 			user = User.get(User.username == l_form.username.data)
-			check_login = modals.check_pass(user.username, l_form.password.data)
+			check_login = check_pass(user.username, l_form.password.data)
 		except:
 			check_login = False
 		if check_login == True:
