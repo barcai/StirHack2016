@@ -89,7 +89,7 @@ def get_results():
 		
 	#with open('result.json', 'w') as f:
 		#f.write(json.dumps(all_result))
-	print(all_result)
+	return json.dumps(all_result)
 	
 	
 def main():
