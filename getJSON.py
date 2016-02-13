@@ -30,6 +30,7 @@ def check_api(api_data, auth_key, user_name, user_password):
     params = api_data["params"]
     url_to_check = "http://dogfish.tech/api/" + endpoint + "/" + params
 
+    # Make a test call to the given API
     response = None
     if(access == "always"):
         response = requests.get(url_to_check)
@@ -44,16 +45,26 @@ def check_api(api_data, auth_key, user_name, user_password):
         if(token[1] != None):
             response = requests.get(url_to_check + "&token=" + token[1])
 
-    #else:
-        #return error
-    return response
+
+    api_status = None
+
+    if(response.status_code == "500"):
+        api_status = "Error 500"
+
+    elif(response.status_code == "404"):
+        api_status = "Error 404"
+
+    elif(response.status_code == "200"):
+        api_status = "OK"
+
+    return api_status
 
 def main():
     for api in checkAPIList():
         print api
-        response = check_api(api, "thaddow", "thaddow", "thaddow")
-        print(type(response))
-    print(getToken('thaddow', 'thaddow'))
+        api_status = check_api(api, "thaddow", "thaddow", "thaddow")
+        print(api_status)
+    #print(getToken('thaddow', 'thaddow'))
 
 if __name__ == "__main__":
     main()
