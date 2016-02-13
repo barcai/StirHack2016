@@ -26,12 +26,16 @@ def make_message(recipient):
     msg = MIMEMultipart()
     msg['From'] = sender
     msg['To'] = recipient
-    msg['Subject'] = '...'
-    body = '...'
+    subject, body = generate_email()
+    msg['Subject'] = subject
     msg.attach(MIMEText(body, 'plain'))
     return msg.as_string()
             
     
+def generate_email():
+    # TODO
+    return 'subject', 'body'
+
 
 # if __name__ == '__main__':
 #     import sys
