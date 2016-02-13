@@ -1,8 +1,9 @@
-import requests, json, sys
+import requests, json, sys, random
 
 username = 'thaddow'
 password = 'thaddow'
 authcode = 'thaddow'
+errorVal = -1
 
 def check_api_list():
     url = "http://dogfish.tech/api/apis"
@@ -33,22 +34,31 @@ def check_api(api_data, auth_key, user_name, user_password):
 	url_to_check = "http://dogfish.tech/api/" + endpoint + "/" + params
 	
 	# Make a test call to the given API
+	random_error = random.randint(0, 9)
 	response = None
 	if(access == "always"):
-		response = requests.get(url_to_check)
-		#response = requests.get(url_to_check + "?broken=1")
-
+		if random_error == errorVal:
+			response = requests.get(url_to_check + "?broken=1")
+		else:
+			response = requests.get(url_to_check)
+		
 	elif(access == "auth"):
 		auth = "&auth=" + auth_key
-		response = requests.get(url_to_check + auth)
-		#response = requests.get(url_to_check + auth + "&broken=1")
+		if random_error == errorVal:
+			response = requests.get(url_to_check + auth + "&broken=1")
+		else:
+			response = requests.get(url_to_check + auth)
+		
 
 	elif(access == "token"):
 		#token = "login?user=" + user_name + "&password=" + user_password
 		token = get_token(user_name, user_password)
 		if(token[1] != None):
-			response = requests.get(url_to_check + "&token=" + token[1])
-			#response = requests.get(url_to_check + "&token=" + token[1] + "&broken=1")
+			if random_error == errorVal:	
+				response = requests.get(url_to_check + "&token=" + token[1] + "&broken=1")
+			else:
+				response = requests.get(url_to_check + "&token=" + token[1])
+			
 
 	
 	message = "OK"
@@ -63,7 +73,7 @@ def check_api(api_data, auth_key, user_name, user_password):
 			message = "Error: 500 Internal Server Error"
 		else:
 			message = "Error: Unable to return data"
-	
+
 	return (response.status_code, message, returned_json)
 
 def get_results():
@@ -76,7 +86,10 @@ def get_results():
 			api_results = {'status_code': api_result[0], 'message': api_result[1], 'returned_json': api_result[2]}
 			results[api['endpoint']] = api_results
 		all_result['test_result'] = results
-	print(json.dumps(all_result))
+		
+	#with open('result.json', 'w') as f:
+		#f.write(json.dumps(all_result))
+	print(all_result)
 	
 	
 def main():
