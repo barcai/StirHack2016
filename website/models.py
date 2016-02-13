@@ -1,6 +1,7 @@
 from datetime import datetime
 import json
 
+from flask.ext.login import UserMixin
 from peewee import *
 
 from app import *
@@ -8,9 +9,9 @@ from app import *
 db = SqliteDatabase("iamverycreativeinnamingdatabases.db")
 
 
-class User(Model):
+class User(Model, UserMixin):
 	username = CharField(unique = True)
-	email = CharField()
+	email = CharField(unique = True)
 	password = CharField()
 	phone_number = CharField()
 	joined_at = DateField(default = datetime.now)
@@ -30,7 +31,7 @@ class User(Model):
 		database = db
 
 
-class Diagnostic(Model):
+class Diagnostic(Model, UserMixin):
 	date = DateField(default = datetime.now, unique = True)
 	diag = TextField()
 

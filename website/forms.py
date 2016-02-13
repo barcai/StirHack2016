@@ -1,4 +1,5 @@
-from wtforms import Form, TextField, PasswordField, validators
+from wtforms import TextField, PasswordField, validators
+from flask_wtf import Form, RecaptchaField
 
 
 class Login(Form):
@@ -12,5 +13,6 @@ class Register(Form):
         validators.EqualTo('confirm_password', message='Passwords do not match')
     ])
     confirm_password = PasswordField('Confirm Password')
-    email = TextField('Email', [validators.Length(min=6, max=35)])
-    phone_num = TextField("Phone Number" [validators.Required()]
+    email = TextField('Email', [validators.Length(min=6, max=35), validators.Email()])
+    phone_num = TextField("Phone Number", [validators.Required()]) 
+    recaptcha = RecaptchaField()
