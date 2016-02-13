@@ -1,10 +1,12 @@
 import os
 
 from flask import Flask
+from flask.ext.bcrypt import Bcrypt
 
 
 # Creation of the app itself
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
 
 app.config.update(dict(
     DATABASE=os.path.join(app.root_path, 'iamverycreativeinnamingdatabases.db'),

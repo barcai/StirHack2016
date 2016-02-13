@@ -1,6 +1,7 @@
 from flask import render_template
 
-import app
+from app import *
+from models import check_pass
 
 
 @app.before_request
@@ -15,20 +16,16 @@ def after_request(response):
     return response
 
 
-def get_db():
-    """Opens a new database connection if there is none yet for the
-    current application context.
-    """
-    if not hasattr(g, 'sqlite_db'):
-        g.sqlite_db = connect_db()
-    return g.sqlite_db
-
-
-@app.teardown_appcontext
-def close_db(error):
-    """Closes the database again at the end of the request."""
-    if hasattr(g, 'sqlite_db'):
-        g.sqlite_db.close()
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm(request.form)
+    if request.method == 'POST' and form.validate():
+        user = User(form.username.data, form.email.data,
+                    form.password.data)
+        db_session.add(user)
+        flash('Thanks for registering')
+        return redirect(url_for('login'))
+    return render_template('register.html', form=form)
 
 
 @app.route("/")
@@ -37,31 +34,35 @@ def index():
     return render_template("index.j2")
 
 
-@app.route('/add', methods=['POST'])
-def add_entry():
-    if not session.get('logged_in'):
-        abort(401)
-    db = get_db()
-    db.execute('insert into entries (title, text) values (?, ?)',
-               [request.form['title'], request.form['text']])
-    db.commit()
-    flash('New entry was successfully posted')
-    return redirect(url_for('show_entries'))
+@app.route('/login', , methods=['POST'])
+def index():
+    l_form = Login(request.form, prefix="login-form")
+    if l_form.validate():
+    	try:
+    		user = User.get(User.username == l_form.username.data)
+    		check_login = check_pass(user.username, l_form.password.data)
+    	except:
+    		check_login = False
+        if check_login == True:
+            conn.commit()
+            return redirect(url_for('me'))
+    return render_template('index.j2', login=l_form, sign_up=Register())
 
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    if request.method == 'POST':
-        if request.form['username'] != app.config['USERNAME']:
-            error = 'Invalid username'
-        elif request.form['password'] != app.config['PASSWORD']:
-            error = 'Invalid password'
-        else:
-            session['logged_in'] = True
-            flash('You were logged in')
-            return redirect(url_for('show_entries'))
-    return render_template('login.html', error=error)
+@app.route('/register', methods=['POST'])
+def register():
+    r_form = Register(request.form, prefix="register-form")
+    if r_form.validate():
+        check_reg = cursor.execute("SELECT * FROM users WHERE username = '%s' OR `e-mail` = '%s'"
+            % (r_form.username.data, r_form.email.data))
+
+        if check_reg == False:
+            cursor.execute("INSERT into users (username, pwd, `e-mail`) VALUES ('%s','%s','%s')"
+                % (r_form.username.data, hashlib.sha1(r_form.password.data).hexdigest(), check_email(r_form.email.data)))
+            conn.commit()
+            return redirect(url_for('index'))
+    return render_template('index.html', login=Login(), sign_up=r_form)
+
 
 
 @app.route('/logout')
