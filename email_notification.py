@@ -33,7 +33,7 @@ def make_message(recipient):
             
     
 
-if __name__ == '__main__':
-    import sys
-    notify([sys.argv[1]])
+# if __name__ == '__main__':
+#     import sys
+#     notify([sys.argv[1]])
 
