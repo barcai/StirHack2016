@@ -45,6 +45,7 @@ class Diagnostic(Model):
 def create_tables():
 	db.connect()
 	db.create_tables([User, Diagnostic], safe = True)
+	db.close()
 
 
 def check_pass(username, password):

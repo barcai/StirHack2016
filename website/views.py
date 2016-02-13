@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, url_for, session
 
 from app import *
 from models import check_pass
@@ -44,8 +44,8 @@ def index():
     	except:
     		check_login = False
         if check_login == True:
-            conn.commit()
-            return redirect(url_for('me'))
+            session['username'] = user.username
+            return redirect(url_for('index'))
     return render_template('index.j2', login=l_form, sign_up=Register())
 
 
