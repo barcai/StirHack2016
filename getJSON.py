@@ -4,9 +4,9 @@ def checkAPIList():
     url = "http://dogfish.tech/api/apis"
     r = requests.get(url)
 
-    if r.status_code == "500":
+    if r.status_code == 500:
         print ("500 Internal Server Error")
-    elif r.status_code == "404":
+    elif r.status_code == 404:
         print ("404 Not Found")
     else:
         parsed_json = r.json()
@@ -48,13 +48,13 @@ def check_api(api_data, auth_key, user_name, user_password):
 
     api_status = None
 
-    if(response.status_code == "500"):
+    if(response.status_code == 500):
         api_status = "Error 500"
 
-    elif(response.status_code == "404"):
+    elif(response.status_code == 404):
         api_status = "Error 404"
 
-    elif(response.status_code == "200"):
+    elif(response.status_code == 200):
         api_status = "OK"
 
     return api_status
