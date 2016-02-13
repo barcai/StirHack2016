@@ -74,7 +74,7 @@ def check_api(api_data, auth_key, user_name, user_password):
 		else:
 			message = "Error: Unable to return data"
 
-	return (response.status_code, message, returned_json)
+	return (response.status_code, message)
 
 def get_results():
 	all_result = {}
@@ -83,7 +83,7 @@ def get_results():
 		results = {}
 		for api in api_list[1]:
 			api_result = check_api(api, username, password, authcode)
-			api_results = {'status_code': api_result[0], 'message': api_result[1], 'returned_json': api_result[2]}
+			api_results = {'status_code': api_result[0], 'message': api_result[1]}
 			results[api['endpoint']] = api_results
 		all_result['test_result'] = results
 		
@@ -101,7 +101,7 @@ def main():
 			#print(api_status)
 	#else:
 		#print ("Error fetching API list")
-	get_results()
+	print(get_results())
 
 if __name__ == "__main__":
     main()
