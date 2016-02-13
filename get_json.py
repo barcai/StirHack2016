@@ -1,6 +1,10 @@
 import requests, json, sys
 
-def checkAPIList():
+username = 'thaddow'
+password = 'thaddow'
+authcode = 'thaddow'
+
+def check_api_list():
     url = "http://dogfish.tech/api/apis"
     r = requests.get(url)
 
@@ -11,7 +15,7 @@ def checkAPIList():
     return (r.status_code, None)
 
 
-def getToken(username, password):
+def get_token(username, password):
     url = "http://dogfish.tech/api/login"
     loginInfo = {'user': username, 'password': password}
     r = requests.get(url, params=loginInfo)
@@ -32,34 +36,59 @@ def check_api(api_data, auth_key, user_name, user_password):
 	response = None
 	if(access == "always"):
 		response = requests.get(url_to_check)
+		#response = requests.get(url_to_check + "?broken=1")
 
 	elif(access == "auth"):
 		auth = "&auth=" + auth_key
 		response = requests.get(url_to_check + auth)
+		#response = requests.get(url_to_check + auth + "&broken=1")
 
 	elif(access == "token"):
 		#token = "login?user=" + user_name + "&password=" + user_password
-		token = getToken(user_name, user_password)
+		token = get_token(user_name, user_password)
 		if(token[1] != None):
 			response = requests.get(url_to_check + "&token=" + token[1])
+			#response = requests.get(url_to_check + "&token=" + token[1] + "&broken=1")
 
+	
+	message = "OK"
 	returned_json = None
 	try:
 		returned_json = response.json()
 	except:
 		returned_json = None
+		if response.status_code == 404:
+			message = "Error: 404 Not Found"
+		elif response.status_code == 500:
+			message = "Error: 500 Internal Server Error"
+		else:
+			message = "Error: Unable to return data"
 	
-	return (response.status_code, returned_json)
+	return (response.status_code, message, returned_json)
 
-def main():
-	api_list = checkAPIList()
+def get_results():
+	all_result = {}
+	api_list = check_api_list()
 	if api_list[0] == 200:
-	    for api in checkAPIList()[1]:
-			print api['id']
-			api_status = check_api(api, "thaddow", "thaddow", "thaddow")
-			print(api_status)
-	else:
-		print ("Error fetching API list")
+		results = {}
+		for api in api_list[1]:
+			api_result = check_api(api, username, password, authcode)
+			api_results = {'status_code': api_result[0], 'message': api_result[1], 'returned_json': api_result[2]}
+			results[api['endpoint']] = api_results
+		all_result['test_result'] = results
+	print(json.dumps(all_result))
+	
+	
+def main():
+	#api_list = check_api_list()
+	#if api_list[0] == 200:
+	    #for api in api_list[1]:
+			#print api['id']
+			#api_status = check_api(api, username, password, authcode)
+			#print(api_status)
+	#else:
+		#print ("Error fetching API list")
+	get_results()
 
 if __name__ == "__main__":
     main()
