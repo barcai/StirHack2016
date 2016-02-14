@@ -177,7 +177,6 @@ body {
 /* User */
 .user {
   background-color: rgba(255,255,255,0.75);
-  height: 90%;
 }
 
 @media (min-width: 992px) {
@@ -186,6 +185,11 @@ body {
   }
 }
 /* Charts */
+
+[data-pie-id] li {
+  padding-top: 5px;
+  background-color: rgba(255, 255, 255, 1);
+}
 
 /* line 20, ../sass/pizza.scss */
 [data-pie-id] li:nth-child(0) {

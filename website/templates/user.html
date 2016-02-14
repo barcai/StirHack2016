@@ -8,35 +8,81 @@
         </div>
 	</div>
     <div class="row">
-        <div class="col-md-3">
-          <ul data-pie-id="svg"><p>
-            {% for data in dataset %}
-cat 
-            {% endfor %}</p>
-            <li data-value="60">Water Buffalo (60)</li>
-            <li data-value="20">Bison (20)</li>
-            <li data-value="12">Sheep (12)</li>
-            <li data-value="32">Goat (32)</li>
-            <li data-value="50">Shetland Pony (50)</li>
-          </ul>
+    <div class="col-md-6">
+      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+          {% for feed in feeds %}
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+               <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Time: feed[1]
+              </a>
+            </h4>
+          </div>
+    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body">
+        feed[2]
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingTwo">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Collapsible Group Item #2
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+      <div class="panel-body">
+        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingThree">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Collapsible Group Item #3
+        </a>
+      </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+      <div class="panel-body">
+        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+      </div>
+    </div>
+  </div>
+</div>
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading">Let's see the last few ones</div>
+
+          <!-- Table -->
+          <table class="table">
+          <tr>
+            <th>Time</th>
+            <th>Result</th>
+          </tr>
+          {% for feed in feeds %}
+          <tr>
+            <td>{{ feed[1] }}</td>
+            <td>{{ feed[2] }}</td>
+          </tr>
+          {% endfor %}
+          </table>
         </div>
-        <div class="col-md-3">
-          <div id="svg"></div>
-        </div>
-        <div class="col-md-3">
-          <ul data-pie-id="my-cool-chart" data-options='{"donut": "true"}'>
-              <li data-value="36">Pepperoni</li>
-              <li data-value="14">Sausage</li>
-              <li data-value="8">Cheese</li>
-              <li data-value="11">Mushrooms</li>
-              <li data-value="7">Chicken</li>
-              <li data-value="24">Other</li>
-            </ul>
-            
-        </div>
-        <div class="col-md-3">
-            <div id="my-cool-chart"></div>
-        </div>
+      </div>
+      <div class="col-md-2">
+        <ul data-pie-id="svg"><p>
+          {% for key, value in dataset.items() %}
+            <li data-value="{{ value }}">{{ key }} ({{ value }})</li>{% endfor %}
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <div id="svg"></div>
+      </div>
     </div>
 </div>
 
