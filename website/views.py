@@ -73,7 +73,7 @@ def logout():
 @app.route("/you")
 @login_required
 def user():
-	conn = sqlite3.connect("old_saved.db")
+	conn = sqlite3.connect("test.db")
 	cursor = conn.execute("SELECT date, diag from Diagnostic Order by date DESC Limit 100;")
 	dataset = crunching_dat_data(cursor)
 	conn.close()
