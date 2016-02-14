@@ -78,13 +78,17 @@ def check_api(api_data, auth_key, user_name, user_password):
 
 def get_results():
 	all_result = {}
-	api_list = check_api_list()
-	if api_list[0] == 200:
-		results = {}
-		for api in api_list[1]:
-			api_result = check_api(api, username, password, authcode)
-			api_results = {'status_code': api_result[0], 'message': api_result[1]}
-			all_result[api['endpoint']] = api_results
+	try:
+		api_list = check_api_list()
+	
+		if api_list[0] == 200:
+			results = {}
+			for api in api_list[1]:
+				api_result = check_api(api, username, password, authcode)
+				api_results = {'status_code': api_result[0], 'message': api_result[1]}
+				all_result[api['endpoint']] = api_results
+	except:
+		pass
 		
 	#with open('result.json', 'w') as f:
 		#f.write(json.dumps(all_result))

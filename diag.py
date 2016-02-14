@@ -1,4 +1,4 @@
-import get_json, time, json, notifications
+import get_json, time, json, notifications, sqlite3
 from datetime import datetime
 
 from peewee import *
@@ -28,10 +28,15 @@ def create_tables():
 
 def main():
 	while True:
-		Diagnostic.create_diag(get_json.get_results())
-		print ("Diagnostics pushed to database")
-		messaging(check_errors())
-		time.sleep(1)
+		get = get_json.get_results()
+		if get == {}:
+			print("Unable to connect to API database.")
+			time.sleep(60)
+		else:
+			Diagnostic.create_diag(get)
+			print ("Diagnostics pushed to database")
+			messaging(check_errors())
+			time.sleep(20)
 
 def check_errors(q_length=3):
 	db.connect()
@@ -96,13 +101,14 @@ def send_messages(faults):
 	#print("SMS sent.")
 	
 	# Email
-	#recepient_list = 
+	#connection = sqlite3.connect("iamverycreativeinnamingdatabases.db")
+	#cursor = connection.execute("SELECT email FROM User")
 	#subject = "Dogfi.sh API Notification"
 	#body = "The following APIs are down at the time this notification was sent:\n"
 	#for api in mail_list:
 		#body = body + api + "\n"
 	#body = body + "\nThere may be more APIs which are down after the time this notification was sent. We will be working to bring these back up as soon as possible.\n\n-The Dogfi.sh Team"
-	#notifications.email_notification(recepient_list, subject, body)
+	#notifications.email_notification(cursor, subject, body)
 	#print("Email sent.")
 		
 		
