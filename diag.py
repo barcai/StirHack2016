@@ -3,6 +3,8 @@ from datetime import datetime
 
 from peewee import *
 
+from website.models import User
+
 db = SqliteDatabase("test.db")
 up_down = True
 downtime = {}
@@ -94,7 +96,7 @@ def send_messages(faults):
 	#print("SMS sent.")
 	
 	# Email
-	#recepient_list = SOME_SORT_OF_QUERY
+	#recepient_list = 
 	#subject = "Dogfi.sh API Notification"
 	#body = "The following APIs are down at the time this notification was sent:\n"
 	#for api in mail_list:
