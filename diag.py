@@ -96,14 +96,13 @@ def send_messages(faults):
 		message = message + api + "\n"
 
 	# SMS
-	notifications.sms_notification("+447490152593", message)
+	notifications.sms_notification("", message)
 	notifications.pushover_notification("uMSMGNJ5MtH5265UTftx9MfkuUjqYf", message)
 	print("SMS sent.")
 	
 	# Email
-	#connection = sqlite3.connect("iamverycreativeinnamingdatabases.db")
-	#cursor = connection.execute("SELECT email FROM User")
-	cursor = "in2erval@outlook.com"
+	connection = sqlite3.connect("iamverycreativeinnamingdatabases.db")
+	cursor = connection.execute("SELECT email FROM User")
 	subject = "Dogfi.sh API Notification"
 	body = "The following APIs are down at the time this notification was sent:\n"
 	for api in mail_list:
