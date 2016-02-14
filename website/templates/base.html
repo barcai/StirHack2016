@@ -30,7 +30,7 @@
                 <ul class="nav masthead-nav">
                 <li class="active"><a href="#">Home</a></li>
                   {% if current_user.is_authenticated %}
-                    <li><a href="#">Logout</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
                   {% else %}
                     <li><a href="#" role="button" data-toggle="modal" data-target="#login-modal">Login/Register</a></li>
                   {% endif %}
@@ -41,8 +41,8 @@
 
           {% block content %}
           <div class="inner cover">
-            <h1 class="cover-heading">Cover your page.</h1>
-            <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
+            <h1 class="cover-heading">DogFi.sh Stuff</h1>
+            <p class="lead">Hope all of the women in this room like this app as there are so few of them in the computing world!</p>
             <p class="lead">
               <a href="#" class="btn btn-lg btn-default">Learn more</a>
             </p>
@@ -51,7 +51,7 @@
 
           <div class="mastfoot">
             <div class="inner">
-              <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+              <p>Made for <a href="http://getbootstrap.com">Stirhack 2016</a>, by the Wizards of Edinburgh Uni.</p>
             </div>
           </div>
         </div>
@@ -79,6 +79,7 @@
                                 <div id="icon-login-msg" class="glyphicon glyphicon-chevron-right"></div>
                                 <span id="text-login-msg">Type your username and password.</span>
                             </div>
+                            {{ login.hidden_tag() }}
                             {{ render_field(login.username, class="form-control", placeholder="Username (type ERROR for error effect)") }}
                             {{ render_field(login.password, class="form-control", placeholder="Password") }}
                   </div>
@@ -116,16 +117,18 @@
                     <!-- End | Lost Password Form -->
                     
                     <!-- Begin | Register Form -->
-                    <form id="register-form" style="display:none;" name="sign_up" method="post" action="{{ url_for('sign_up') }}>
+                    <form id="register-form" style="display:none;" name="register" method="post" action="{{ url_for('register') }}">
                     <div class="modal-body">
                 <div id="div-register-msg">
                                 <div id="icon-register-msg" class="glyphicon glyphicon-chevron-right"></div>
                                 <span id="text-register-msg">Register an account.</span>
                             </div>
-                <input id="register_username" class="form-control" type="text" placeholder="Username (type ERROR for error effect)" required>
-                            <input id="register_email" class="form-control" type="text" placeholder="E-Mail" required>
-                            <input id="register_password" class="form-control" type="password" placeholder="Password" required>
-                  </div>
+                            {{sign_up.hidden_tag()}}
+                  {{ render_field(sign_up.username, class="form-control", placeholder="Username") }}
+                  {{ render_field(sign_up.email, class="form-control", placeholder="Email") }}
+                  {{ render_field(sign_up.password, class="form-control", placeholder="Password") }}
+                  {{ render_field(sign_up.confirm_password, class="form-control", placeholder="Confirm Password") }}
+                  {{ render_field(sign_up.phone_num, class="form-control", placeholder="Phone Number") }}
                 <div class="modal-footer">
                             <div>
                                 <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
@@ -146,8 +149,8 @@
   </div>
     <!-- END # MODAL LOGIN -->
 
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="{{url_for('static', filename='js/jquery.js') }}">\x3C/script>')</script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="{{url_for('static', filename='js/jquery-2.2.0.min.js') }}">\x3C/script>')</script>
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/modal.js') }}"></script>

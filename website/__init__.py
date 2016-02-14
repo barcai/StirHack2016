@@ -29,7 +29,7 @@ from website.views import app
 def load_user(userid):
     try:
         return User.select().where(
-            User.id == int(userid)
+            User._id == int(userid)
         ).get()
     except DoesNotExist:
         return None
