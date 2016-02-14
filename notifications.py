@@ -40,10 +40,10 @@ def sms_notification(number, message):
 
 #### EMAIL ####
 
-def email_notification(recipients):
+def email_notification(recipients, subject, body):
     server = connect_to_email_server()
     for recipient in recipients:
-        message = make_email(recipient)
+        message = make_email(recipient, subject, body)
         server.sendmail(EMAIL_ADDRESS, recipients, message)
     server.quit()
 
@@ -55,19 +55,14 @@ def connect_to_email_server():
     return server
 
 
-def make_email(recipient):
+def make_email(recipient, subject, body):
     msg = MIMEMultipart()
     msg['From'] = EMAIL_ADDRESS
     msg['To'] = recipient
-    subject, body = generate_email_content()
     msg['Subject'] = subject
     msg.attach(MIMEText(body, 'plain'))
     return msg.as_string()
             
-    
-def generate_email_content():
-    # TODO
-    return 'subject', 'body'
 
 
 

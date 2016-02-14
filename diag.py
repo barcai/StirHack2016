@@ -28,7 +28,7 @@ def main():
 	while True:
 		Diagnostic.create_diag(get_json.get_results())
 		print ("Diagnostics pushed to database")
-		check_errors()
+		messaging(check_errors())
 		time.sleep(1)
 
 def check_errors(q_length=3):
@@ -48,13 +48,33 @@ def check_errors(q_length=3):
 			faults[api] = (api, faults[api][1] and (diag['message'] != "OK"))
 		if faults[api][1] == True:
 			if downtime.get(api, None) == None:
-				downtime[api] = entry_times[0].strftime("%Y-%m-%d %H:%M:%S")
-			print("Error confirmed on: " + api + " | Downtime started: " + downtime[api])
+				downtime[api] = entry_times[q_length - 1].strftime("%Y-%m-%d %H:%M:%S")
+			diag = json.loads(past_entries[0])[api]
+			print("Error confirmed on: " + api + " | Downtime started: " + downtime[api] + " | Recent message: " + diag['message'])
 		else:
 			downtime[api] = None
 
 	db.close()
 	return faults
+	
+def messaging(faults):
+	global up_down
+	if up_down:
+		for api_err in faults:
+			if faults[api_err][1] == True:
+				print("APIs are down.")
+				send_messages(faults)
+				up_down = False
+				break;
+	else:
+		all_operational = True
+		for api_err in faults:
+			if faults[api_err][1] == True:
+				all_operational = False
+				break;
+		if all_operational:
+			print("Services confirmed to be back online.")
+			up_down = True
 		
 		
 def send_messages(faults):
@@ -71,6 +91,17 @@ def send_messages(faults):
 	# SMS
 	#notifications.sms_notification("+447490152593", message)
 	#notifications.pushover_notification("uMSMGNJ5MtH5265UTftx9MfkuUjqYf", message)
+	#print("SMS sent.")
+	
+	# Email
+	#recepient_list = SOME_SORT_OF_QUERY
+	#subject = "Dogfi.sh API Notification"
+	#body = "The following APIs are down at the time this notification was sent:\n"
+	#for api in mail_list:
+		#body = body + api + "\n"
+	#body = body + "\nThere may be more APIs which are down after the time this notification was sent. We will be working to bring these back up as soon as possible.\n\n-The Dogfi.sh Team"
+	#notifications.email_notification(recepient_list, subject, body)
+	#print("Email sent.")
 		
 		
 create_tables()
