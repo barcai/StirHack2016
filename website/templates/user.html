@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Welcome back {{ current_user.username }}!{% endblock %}
+{% block user %}
+<div class="container user">
+	<div class="row">
+        <div class="col-md-12">
+            <h2>Here are the details on the last couple of days:</h2>
+        </div>
+	</div>
+    <div class="row">
+        <div class="col-md-3">
+          <ul data-pie-id="svg"><p>
+            {% for data in dataset %}
+cat 
+            {% endfor %}</p>
+            <li data-value="60">Water Buffalo (60)</li>
+            <li data-value="20">Bison (20)</li>
+            <li data-value="12">Sheep (12)</li>
+            <li data-value="32">Goat (32)</li>
+            <li data-value="50">Shetland Pony (50)</li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <div id="svg"></div>
+        </div>
+        <div class="col-md-3">
+          <ul data-pie-id="my-cool-chart" data-options='{"donut": "true"}'>
+              <li data-value="36">Pepperoni</li>
+              <li data-value="14">Sausage</li>
+              <li data-value="8">Cheese</li>
+              <li data-value="11">Mushrooms</li>
+              <li data-value="7">Chicken</li>
+              <li data-value="24">Other</li>
+            </ul>
+            
+        </div>
+        <div class="col-md-3">
+            <div id="my-cool-chart"></div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+ {% block scripts %}<script type="text/javascript" src="//cdn.jsdelivr.net/snap.svg/0.1.0/snap.svg-min.js"></script>
+ <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>{% endblock %}

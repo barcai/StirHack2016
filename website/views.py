@@ -1,10 +1,12 @@
+import json
+import sqlite3
+
 from flask import redirect, render_template, url_for, session, request, g, flash
 from flask.ext.login import login_required, login_user, logout_user, current_user
 
 from website.models import db, User, check_pass
 from website.forms import Login, Register
 from website import app
-import logging as l
 
 
 @app.before_request
@@ -22,26 +24,24 @@ def after_request(response):
 @app.route("/")
 @app.route("/index")
 def index():
+	if current_user.is_authenticated:
+		return render_template("user.html")
 	return render_template("index.html", login=Login(), sign_up=Register())
 
 
 @app.route('/login', methods=['POST'])
 def login():
 	l_form = Login(request.form)
-	print("faszom")
 	if l_form.validate_on_submit():
-		print("faszom")
 		check_login = True
 		try:
 			user = User.get(User.username == l_form.username.data)
 			check_login = check_pass(user.username, l_form.password.data)
-			l.error("Fuck THis shit")
 		except:
 			check_login = False
-			l.error("Yeah bitches")
 		if check_login == True:
 			login_user(user)
-			return redirect(url_for('index'))
+			return redirect(url_for('user'))
 	return render_template('index.html', login=l_form, sign_up=Register())
 
 
@@ -68,3 +68,25 @@ def logout():
 	logout_user()
 	flash('You were logged out')
 	return redirect(url_for('index'))
+
+
+@app.route("/you")
+@login_required
+def user():
+	conn = sqlite3.connect("old_saved.db")
+	cursor = conn.execute("SELECT date, diag from Diagnostic Order by date DESC Limit 100;")
+	dataset = crunching_dat_data(cursor)
+	conn.close()
+	return render_template("user.html", dataset = dataset)
+
+
+def crunching_dat_data(dataset):
+	ret = {'api8':0, 'api1':0, 'api7':0, 'api6':0, 'api3':0, 'api5':0, 'api4':0, 'api2':0}
+	for data in dataset:
+		s = dict(json.loads(json.loads(data[1])))
+		print(type(s))
+		for key in s.keys():
+			if s[key]["message"] != "OK":
+				ret[key] = ret[key] + 1
+	print(ret)
+	return json.dumps(ret)
