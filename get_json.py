@@ -3,7 +3,7 @@ import requests, json, sys, random
 username = 'thaddow'
 password = 'thaddow'
 authcode = 'thaddow'
-errorVal = -1
+errorVal = 0
 
 def check_api_list():
     url = "http://dogfish.tech/api/apis"
@@ -34,7 +34,7 @@ def check_api(api_data, auth_key, user_name, user_password):
 	url_to_check = "http://dogfish.tech/api/" + endpoint + "/" + params
 	
 	# Make a test call to the given API
-	random_error = random.randint(0, 9)
+	random_error = random.randint(0, 5)
 	response = None
 	if(access == "always"):
 		if random_error == errorVal:
@@ -84,8 +84,7 @@ def get_results():
 		for api in api_list[1]:
 			api_result = check_api(api, username, password, authcode)
 			api_results = {'status_code': api_result[0], 'message': api_result[1]}
-			results[api['endpoint']] = api_results
-		all_result['test_result'] = results
+			all_result[api['endpoint']] = api_results
 		
 	#with open('result.json', 'w') as f:
 		#f.write(json.dumps(all_result))
