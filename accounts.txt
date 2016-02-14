@@ -1,0 +1,29 @@
+twilio
+
+number: +441158242719
+
+password: CiA8ZLYYcD
+
+account_sid: AC8f016e4a9e84c6f80a4a5a41d4c6d312
+
+auth_token: 401f295e0d82514a42ec08a9563baa15
+
+
+
+ifttt
+
+email: alexjannan@gmail.com
+
+password: HoJh1TRSJo
+
+
+
+pushover
+
+email: alexjannan@gmail.com
+
+password: HoJh1TRSJo
+
+user key: uMSMGNJ5MtH5265UTftx9MfkuUjqYf
+
+application token: aAckoTwkr26Ukc855pRR76T9z5jUJB
