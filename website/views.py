@@ -1,3 +1,4 @@
+import ast
 import json
 import sqlite3
 
@@ -74,7 +75,7 @@ def logout():
 @login_required
 def user():
 	conn = sqlite3.connect("test.db")
-	cursor = conn.execute("SELECT date, diag from Diagnostic Order by date DESC Limit 100;")
+	cursor = conn.execute("SELECT * from Diagnostic Order by date DESC Limit 100;")
 	dataset = crunching_dat_data(cursor)
 	conn.close()
 	return render_template("user.html", dataset = dataset)
@@ -83,7 +84,7 @@ def user():
 def crunching_dat_data(dataset):
 	ret = {'api8':0, 'api1':0, 'api7':0, 'api6':0, 'api3':0, 'api5':0, 'api4':0, 'api2':0}
 	for data in dataset:
-		s = dict(json.loads(json.loads(data[1])))
+		s = ast.literal_eval(json.loads(json.loads(json.loads(data[2]))))
 		print(type(s))
 		for key in s.keys():
 			if s[key]["message"] != "OK":
