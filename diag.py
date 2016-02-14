@@ -31,12 +31,12 @@ def main():
 		get = get_json.get_results()
 		if get == {}:
 			print("Unable to connect to API database.")
-			time.sleep(60)
+			time.sleep(30)
 		else:
 			Diagnostic.create_diag(get)
 			print ("Diagnostics pushed to database")
 			messaging(check_errors())
-			time.sleep(20)
+			time.sleep(10)
 
 def check_errors(q_length=3):
 	db.connect()
@@ -87,8 +87,8 @@ def messaging(faults):
 def send_messages(faults):
 	mail_list = []
 	for api_err in faults:
-		if api_err[1] == True:
-			mail_list.append(api_err[0])
+		if faults[api_err][1] == True:
+			mail_list.append("- " + api_err)
 	
 	mail_list.sort()
 	message = "Dogfi.sh API Notification - the following APIs are down:\n"
@@ -96,20 +96,21 @@ def send_messages(faults):
 		message = message + api + "\n"
 
 	# SMS
-	#notifications.sms_notification("+447490152593", message)
-	#notifications.pushover_notification("uMSMGNJ5MtH5265UTftx9MfkuUjqYf", message)
-	#print("SMS sent.")
+	notifications.sms_notification("+447490152593", message)
+	notifications.pushover_notification("uMSMGNJ5MtH5265UTftx9MfkuUjqYf", message)
+	print("SMS sent.")
 	
 	# Email
 	#connection = sqlite3.connect("iamverycreativeinnamingdatabases.db")
 	#cursor = connection.execute("SELECT email FROM User")
-	#subject = "Dogfi.sh API Notification"
-	#body = "The following APIs are down at the time this notification was sent:\n"
-	#for api in mail_list:
-		#body = body + api + "\n"
-	#body = body + "\nThere may be more APIs which are down after the time this notification was sent. We will be working to bring these back up as soon as possible.\n\n-The Dogfi.sh Team"
-	#notifications.email_notification(cursor, subject, body)
-	#print("Email sent.")
+	cursor = "in2erval@outlook.com"
+	subject = "Dogfi.sh API Notification"
+	body = "The following APIs are down at the time this notification was sent:\n"
+	for api in mail_list:
+		body = body + api + "\n"
+	body = body + "\nThere may be more APIs which are down after the time this notification was sent. We will be working to bring these back up as soon as possible.\n\n-The Dogfi.sh Team"
+	notifications.email_notification(cursor, subject, body)
+	print("Email sent.")
 		
 		
 create_tables()
