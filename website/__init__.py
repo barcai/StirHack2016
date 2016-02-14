@@ -16,7 +16,7 @@ app.config.update(dict(
     USERNAME='admin',
     PASSWORD='admin'
 ))
-
+app.jinja_env.autoescape = False
 
 bcrypt = Bcrypt(app)
 login_manager = LoginManager()
