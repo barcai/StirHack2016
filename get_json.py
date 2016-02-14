@@ -88,7 +88,7 @@ def get_results():
 		
 	#with open('result.json', 'w') as f:
 		#f.write(json.dumps(all_result))
-	return json.dumps(all_result, sort_keys = True)
+	return all_result
 	
 	
 def main():

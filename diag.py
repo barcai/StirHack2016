@@ -39,17 +39,17 @@ def check_errors(q_length=3):
 	for i in range(0, q_length):
 		past_entries[i] = json.loads(Diagnostic.select().order_by(-Diagnostic.date)[i].diag)
 		entry_times[i] = Diagnostic.select().order_by(-Diagnostic.date)[i].date
-	api_list = json.loads(past_entries[0])
+	api_list = past_entries[0]
 	faults = {}
 	for api in api_list:
 		faults[api] = (api, True)
 		for i in range(0, q_length):
-			diag = json.loads(past_entries[i])[api]
+			diag = past_entries[i][api]
 			faults[api] = (api, faults[api][1] and (diag['message'] != "OK"))
 		if faults[api][1] == True:
 			if downtime.get(api, None) == None:
 				downtime[api] = entry_times[q_length - 1].strftime("%Y-%m-%d %H:%M:%S")
-			diag = json.loads(past_entries[0])[api]
+			diag = past_entries[0][api]
 			print("Error confirmed on: " + api + " | Downtime started: " + downtime[api] + " | Recent message: " + diag['message'])
 		else:
 			downtime[api] = None
