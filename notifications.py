@@ -34,7 +34,7 @@ def sms_notification(number, message):
     """Send sms message via Twilio to number (include country code in number, 
     for example '+447000000000')"""
     client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-    message = client.messages.create(body="Hi!", to=number, from_="+441158242719")
+    client.messages.create(body=message, to=number, from_="+441158242719")
 
 
 

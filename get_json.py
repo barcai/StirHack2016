@@ -34,7 +34,7 @@ def check_api(api_data, auth_key, user_name, user_password):
 	url_to_check = "http://dogfish.tech/api/" + endpoint + "/" + params
 	
 	# Make a test call to the given API
-	random_error = random.randint(0, 5)
+	random_error = random.randint(0, 1)
 	response = None
 	if(access == "always"):
 		if random_error == errorVal:
